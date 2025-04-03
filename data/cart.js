@@ -39,16 +39,30 @@ export function saveToStorage() {
   saveToStorage();
 } 
 
-export function removeFromCart(productId) {
+export function removeFromCart(pro) {
   const newCart = [];
 
   cart.forEach((cartItem) => {
-  if (cartItem.productId !== productId) {
+  if (cartItem.productId !== pro) {
     newCart.push(cartItem)
   }
   })
 
   cart = newCart;
+
+  saveToStorage();
+}
+
+export function updateQuantity(productId, newQuantity) {
+  let matchingItem;
+
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem;
+    }
+  });
+
+  matchingItem.quantity = newQuantity;
 
   saveToStorage();
 }

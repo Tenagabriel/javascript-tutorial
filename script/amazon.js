@@ -29,7 +29,7 @@ products.forEach((product) => {
           </div>
        
             <div class="product-quantity-container">
-             <select class="js-quantity-selector">
+             <select class="js-quantity-selector-${product.id}">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -42,7 +42,7 @@ products.forEach((product) => {
              </select>
             </div>
 
-            <div class="added-to-cart js-added-to-cart">
+            <div class="added-to-cart js-added-to-cart-${product.id}">
            
           </div>
           
@@ -60,35 +60,34 @@ document.querySelector('.js-product-grid').innerHTML = productContainer;
 
 
 
-
-function updateCartQuantity() {
-     let cartQuantity = 0; 
-
+   function updateCartQuantity() {
+    let cartQuantity = 0; 
       cart.forEach((cartItem) => {
-       cartQuantity = cartQuantity + cartItem.quantity;
+        cartQuantity = cartQuantity + cartItem.quantity;
       })
 
-      document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-}
+          document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+    }
 
   const buttonElements = document.querySelectorAll('.js-add-to-cart')
     buttonElements.forEach((button) => {
       button.addEventListener('click', () => {
        const productId = button.dataset.productId;
 
-      const quantitySelector = button.closest('.product-container').querySelector('.js-quantity-selector')
+      const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`)
 
       const quantity = Number(quantitySelector.value);
 
        addToCart(productId, quantity);
        
        updateCartQuantity();
- 
-      const addedMessage = button.closest('.product-container').querySelector('.js-added-to-cart');
-      addedMessage.innerHTML = `
-        <img src="images/icons/checkmark.png">
-        Added
-      `;
+
+       
+          const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+          addedMessage.innerHTML = `
+            <img src="images/icons/checkmark.png">
+            Added
+          `;
 
       addedMessage.classList.add('added-to-cart-visible');
 
@@ -96,6 +95,7 @@ function updateCartQuantity() {
         addedMessage.innerHTML = '';
         addedMessage.classList.remove('added-to-cart-visible'); 
       }, 2000);
+  
 
    console.log(cart);
 
